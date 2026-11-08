@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\OrdenServicio;
+use App\Models\Cliente;
+use App\Models\Usuario;
 
 class OrdenservicioController extends Controller
 {
@@ -21,7 +23,10 @@ class OrdenservicioController extends Controller
      */
     public function create()
     {
-        //
+        $clientes = Cliente::all();
+        $usuarios = Usuario::all();
+        
+        return view('ordenservicio.create', compact('clientes', 'usuarios'));
     }
 
     /**
@@ -29,7 +34,18 @@ class OrdenservicioController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'cliente_id' => 'required',
+            'usuario_id' => 'required',
+            'codigo_orden' => 'required|unique:orden_de_servicio,codigo_orden',
+            'descripcion' => 'required',
+            'tipo_servicio' => 'required',
+            'prioridad' => 'required',
+        ]);
+
+        OrdenServicio::create($request->all());
+
+        return redirect()->route('ordenservicio.index')->with('success', 'Orden creada exitosamente.');
     }
 
     /**
@@ -45,7 +61,11 @@ class OrdenservicioController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $orden = OrdenServicio::findOrFail($id);
+        $clientes = Cliente::all();
+        $usuarios = Usuario::all();
+
+        return view('ordenservicio.edit', compact('orden', 'clientes', 'usuarios'));
     }
 
     /**
@@ -53,7 +73,17 @@ class OrdenservicioController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'tipo_servicio' => 'required',
+            'prioridad' => 'required',
+            'estado' => 'required',
+            'fecha_cierre_estimada' => 'nullable|date',
+        ]);
+
+        $orden = OrdenServicio::findOrFail($id);
+        $orden->update($request->only(['tipo_servicio', 'prioridad', 'estado', 'fecha_cierre_estimada']));
+
+        return redirect()->route('ordenservicio.index')->with('success', 'Orden actualizada correctamente.');
     }
 
     /**

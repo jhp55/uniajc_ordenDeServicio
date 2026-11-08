@@ -15,10 +15,9 @@
 
         <h1 class="mb-4">Órdenes de Servicio Registradas</h1>
 
-      {{--  <a href="{{ route('ordenes-servicio.create') }}"
-           class="btn btn-primary mb-3">
+        <a href="{{ route('ordenservicio.create') }}" class="btn btn-primary mb-3">
             Crear Nueva Orden
-        </a>--}}
+        </a>
 
         @if (session('success'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -110,12 +109,11 @@
                                 : 'No disponible' }}
                         </td>
 
-                    {{--    <td class="text-center">
-                            <a href="{{ route('ordenes-servicio.edit', $orden->id) }}"
-                               class="btn btn-sm btn-warning">
+                        <td class="text-center">
+                            <a href="{{ route('ordenservicio.edit', $orden->id) }}" class="btn btn-sm btn-warning">
                                 Editar
                             </a>
-                        </td>--}}
+                        </td>
 
                     </tr>
                     @empty
